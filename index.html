@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Lloyd Session — Saturday</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0eb;
+  --card: #ffffff;
+  --accent: #c45d3e;
+  --accent-soft: #f3e0d8;
+  --text: #2a2520;
+  --text-muted: #7a7068;
+  --border: #e8e0d8;
+  --green: #4a7c59;
+  --green-soft: #e2efe6;
+  --blue: #4a6b8a;
+  --blue-soft: #dfe8f0;
+  --purple: #7a5c8a;
+  --purple-soft: #ede4f0;
+  --warm: #8a6b4a;
+  --warm-soft: #f0e8df;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  padding: 0 0 80px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.header {
+  background: var(--accent);
+  color: white;
+  padding: 32px 20px 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -10%;
+  right: -10%;
+  height: 40px;
+  background: var(--bg);
+  border-radius: 50% 50% 0 0;
+}
+
+.header h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.header p {
+  font-size: 14px;
+  opacity: 0.85;
+  font-weight: 300;
+}
+
+.summary {
+  padding: 20px 20px 8px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.stat {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.stat-value {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  padding: 24px 20px 10px;
+}
+
+.block {
+  margin: 0 16px 14px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.block-header {
+  padding: 16px 16px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.block-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.block-tag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.tag-glute { background: var(--accent-soft); color: var(--accent); }
+.tag-hinge { background: var(--green-soft); color: var(--green); }
+.tag-split { background: var(--blue-soft); color: var(--blue); }
+.tag-push { background: var(--purple-soft); color: var(--purple); }
+.tag-finisher { background: var(--warm-soft); color: var(--warm); }
+.tag-warmup { background: var(--green-soft); color: var(--green); }
+
+.block-meta {
+  padding: 4px 16px 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.exercise {
+  border-top: 1px solid var(--border);
+  padding: 14px 16px;
+}
+
+.exercise-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.exercise-id {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.exercise-name {
+  font-weight: 500;
+  font-size: 15px;
+  flex: 1;
+}
+
+.exercise-rx {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+.exercise-expand {
+  margin-left: 8px;
+  font-size: 16px;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.exercise-expand.open {
+  transform: rotate(180deg);
+}
+
+.form-tips {
+  display: none;
+  padding: 10px 0 4px 36px;
+}
+
+.form-tips.visible {
+  display: block;
+}
+
+.form-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.form-tips li {
+  position: relative;
+  padding: 3px 0 3px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.form-tips li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.alternatives {
+  margin: 0 16px 14px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.alt-header {
+  padding: 16px;
+  background: linear-gradient(135deg, var(--warm-soft), var(--bg));
+  border-bottom: 1px solid var(--border);
+}
+
+.alt-header h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.alt-header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.alt-exercise {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.alt-exercise:last-child {
+  border-bottom: none;
+}
+
+.alt-exercise-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.alt-name {
+  font-weight: 500;
+  font-size: 14px;
+  flex: 1;
+}
+
+.alt-swaps {
+  font-size: 12px;
+  color: var(--warm);
+  background: var(--warm-soft);
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.alt-expand {
+  margin-left: 8px;
+  font-size: 16px;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.alt-expand.open {
+  transform: rotate(180deg);
+}
+
+.alt-tips {
+  display: none;
+  padding: 8px 0 2px 0;
+}
+
+.alt-tips.visible {
+  display: block;
+}
+
+.alt-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.alt-tips li {
+  position: relative;
+  padding: 3px 0 3px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.alt-tips li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--warm);
+  font-size: 12px;
+}
+
+.note-bar {
+  margin: 0 16px 14px;
+  padding: 14px 16px;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  font-size: 13px;
+  color: var(--accent);
+  line-height: 1.5;
+}
+
+.note-bar strong {
+  font-weight: 700;
+}
+
+.footer {
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>David Lloyd Session</h1>
+  <p>CrossFit area · Legs, glutes & core focus · Supersets</p>
+</div>
+
+<div class="summary">
+  <div class="summary-grid">
+    <div class="stat">
+      <div class="stat-value">45</div>
+      <div class="stat-label">Minutes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Blocks</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">25</div>
+      <div class="stat-label">Sets</div>
+    </div>
+  </div>
+</div>
+
+<!-- WARM-UP -->
+<div class="section-label">☀ Warm-up</div>
+
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">Get Everything Moving</div>
+    <span class="block-tag tag-warmup">5 min</span>
+  </div>
+  <div class="block-meta">No rest — flow through continuously</div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">1</span>
+      <span class="exercise-name">Hip circles</span>
+      <span class="exercise-rx">10 each way</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Hands on hips, big slow circles</li>
+        <li>Go as wide as your range allows</li>
+        <li>Keep torso still — move from the hip socket</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">2</span>
+      <span class="exercise-name">Bodyweight squats</span>
+      <span class="exercise-rx">× 10</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Feet shoulder width, toes slightly out</li>
+        <li>Sit back and down — aim to get hips below knees</li>
+        <li>Drive knees out over toes throughout</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">3</span>
+      <span class="exercise-name">Glute bridges</span>
+      <span class="exercise-rx">× 10 (2s hold)</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Feet flat, knees at 90°</li>
+        <li>Squeeze glutes hard at the top — hold 2 seconds</li>
+        <li>Tuck your pelvis (flatten lower back) at lockout</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">4</span>
+      <span class="exercise-name">Inchworms</span>
+      <span class="exercise-rx">× 5</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Walk hands out to a plank, pause, walk feet to hands</li>
+        <li>Keep legs as straight as you can on the walk-in</li>
+        <li>Great for waking up hamstrings and shoulders</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">5</span>
+      <span class="exercise-name">Light KB swings</span>
+      <span class="exercise-rx">× 10</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Use a light kettlebell — this is a warm-up, not a workout</li>
+        <li>Hinge at hips, not squatting — snap the hips forward</li>
+        <li>Arms are just ropes — power comes from the glutes</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCK 1 -->
+<div class="section-label">💪 Working blocks</div>
+
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">Block 1 — Squat + Glute</div>
+    <span class="block-tag tag-glute">≈7 min</span>
+  </div>
+  <div class="block-meta">Superset A1 ↔ A2 · Rest 60–90s between rounds · 3 rounds</div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">A1</span>
+      <span class="exercise-name">Goblet squat</span>
+      <span class="exercise-rx">3 × 10</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Hold KB or DB at chest height, elbows tucked in</li>
+        <li>Sit deep — hip crease below knee if possible</li>
+        <li>Push knees out wide at the bottom, pause for a beat</li>
+        <li>Drive up through the whole foot, squeezing glutes at top</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">A2</span>
+      <span class="exercise-name">Single leg hip thrust (back on bench)</span>
+      <span class="exercise-rx">3 × 10/leg</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Shoulder blades on the bench edge, one foot planted</li>
+        <li>Non-working leg held at 90° or extended — find what feels stable</li>
+        <li>Drive through the heel, squeeze glute hard at the top for 2 seconds</li>
+        <li>Tuck your chin slightly — don't arch your neck back</li>
+        <li>If too hard single leg, do both legs with a plate on hips</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCK 2 -->
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">Block 2 — Hinge + Press</div>
+    <span class="block-tag tag-hinge">≈7 min</span>
+  </div>
+  <div class="block-meta">Superset B1 ↔ B2 · Rest 60–90s between rounds · 3 rounds</div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">B1</span>
+      <span class="exercise-name">KB Romanian deadlift</span>
+      <span class="exercise-rx">3 × 10</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Hold two KBs in front of thighs, soft bend in knees</li>
+        <li>Push hips back like you're closing a car door with your bum</li>
+        <li>3-second lowering — really feel the hamstring stretch</li>
+        <li>Stop when you feel maximum stretch, then drive hips forward</li>
+        <li>Keep KBs close to your legs the whole way</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">B2</span>
+      <span class="exercise-name">Half-kneeling single arm DB press</span>
+      <span class="exercise-rx">3 × 8/arm</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Kneel on the same side as the pressing arm (right arm up = right knee down)</li>
+        <li>Front foot flat, back knee on a mat or towel</li>
+        <li>Brace your core hard — don't lean or arch sideways</li>
+        <li>Press straight up, lock out fully, lower under control</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCK 3 -->
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">Block 3 — Split + Pull</div>
+    <span class="block-tag tag-split">≈8 min</span>
+  </div>
+  <div class="block-meta">Superset C1 ↔ C2 · Rest 60–90s between rounds · 3 rounds</div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">C1</span>
+      <span class="exercise-name">DB Bulgarian split squat</span>
+      <span class="exercise-rx">3 × 8/leg</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Rear foot up on bench, shoelaces down</li>
+        <li>Front foot far enough forward that knee stays over ankle</li>
+        <li>Lean torso slightly forward to bias glutes over quads</li>
+        <li>Lower until back knee almost touches the floor</li>
+        <li>For the right hip — don't force depth if you feel a pinch</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">C2</span>
+      <span class="exercise-name">Resistance band pull-ups</span>
+      <span class="exercise-rx">3 × 6–8</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Loop band over bar, step in with one or both feet</li>
+        <li>Hands just outside shoulder width, palms facing away</li>
+        <li>Pull elbows down and back — think "bend the bar"</li>
+        <li>Get chin clearly over the bar, lower fully each rep</li>
+        <li>Use a thicker band if you can't get 6 clean reps</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCK 4 -->
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">Block 4 — Push + Row</div>
+    <span class="block-tag tag-push">≈6 min</span>
+  </div>
+  <div class="block-meta">Superset D1 ↔ D2 · Rest 60s between rounds · 3 rounds</div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">D1</span>
+      <span class="exercise-name">Press-ups</span>
+      <span class="exercise-rx">3 × 8–12</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Hands just wider than shoulders, fingers forward</li>
+        <li>Body in a straight line — no sagging hips or piking up</li>
+        <li>Lower chest to the floor, elbows at ~45° to your body</li>
+        <li>Incline on the bench to scale easier, or knees down</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">D2</span>
+      <span class="exercise-name">Single arm cable mid row</span>
+      <span class="exercise-rx">3 × 10/arm</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Set cable at about belly button height</li>
+        <li>Square your hips — resist the rotation, that's the core work</li>
+        <li>Pull elbow straight back, squeeze shoulder blade in</li>
+        <li>Slow return — don't let the cable yank you forward</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCK 5 -->
+<div class="block">
+  <div class="block-header">
+    <div class="block-title">Block 5 — Power + Core Finisher</div>
+    <span class="block-tag tag-finisher">≈8 min</span>
+  </div>
+  <div class="block-meta">Tri-set E1 → E2 → E3 · Rest 45–60s between rounds · 3 rounds</div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">E1</span>
+      <span class="exercise-name">Med ball rotational slam</span>
+      <span class="exercise-rx">3 × 6/side</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Use a dead ball (the ones that don't bounce)</li>
+        <li>Rotate from the hips and core, not just the arms</li>
+        <li>Slam hard into the ground just outside your foot</li>
+        <li>Reset fully between each rep — power, not cardio</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">E2</span>
+      <span class="exercise-name">Cable tricep pushdown</span>
+      <span class="exercise-rx">3 × 12</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Elbows pinned to your sides — they shouldn't drift forward</li>
+        <li>Push down and slightly out at the bottom, squeeze triceps</li>
+        <li>Control the return — don't let it snap back up</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-top" onclick="toggle(this)">
+      <span class="exercise-id">E3</span>
+      <span class="exercise-name">Dead bug</span>
+      <span class="exercise-rx">3 × 10/side</span>
+      <span class="exercise-expand">▾</span>
+    </div>
+    <div class="form-tips">
+      <ul>
+        <li>Lie on back, arms up to ceiling, knees at 90°</li>
+        <li>Press your lower back flat into the floor — keep it there</li>
+        <li>Extend opposite arm and leg out slowly, breathing out</li>
+        <li>If your back arches off the floor, you've gone too far</li>
+        <li>Go slow — 3 seconds out, 3 seconds back</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK REMINDER -->
+<div class="note-bar">
+  <strong>Becky's cues for the session:</strong> On all glute exercises, focus on the squeeze at the top and tuck your pelvis (posterior pelvic tilt). On RDLs and split squats, slow eccentrics — 3 seconds down. If the right hip objects to any movement, reduce depth or swap in an alternative below.
+</div>
+
+<!-- ALTERNATIVES -->
+<div class="section-label">🔄 Alternatives</div>
+
+<div class="alternatives">
+  <div class="alt-header">
+    <h3>If Equipment Is Busy</h3>
+    <p>Swap these in 1-for-1 if the cable machine or pull-up bar is occupied</p>
+  </div>
+
+  <div class="alt-exercise">
+    <div class="alt-exercise-top" onclick="toggleAlt(this)">
+      <span class="alt-name">DB bent-over row</span>
+      <span class="alt-swaps">Swaps for: cable row</span>
+      <span class="alt-expand">▾</span>
+    </div>
+    <div class="alt-tips">
+      <ul>
+        <li>One hand and knee on a bench for support</li>
+        <li>Pull DB to your hip, not your armpit</li>
+        <li>Keep your back flat and core braced throughout</li>
+        <li>Same anti-rotation benefit as the cable version</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alt-exercise">
+    <div class="alt-exercise-top" onclick="toggleAlt(this)">
+      <span class="alt-name">DB skull crushers</span>
+      <span class="alt-swaps">Swaps for: cable pushdown</span>
+      <span class="alt-expand">▾</span>
+    </div>
+    <div class="alt-tips">
+      <ul>
+        <li>Lie on bench, DBs above your face, arms straight</li>
+        <li>Bend at the elbow only — lower DBs to beside your ears</li>
+        <li>Keep elbows pointing at the ceiling, not flaring out</li>
+        <li>Use lighter weight than you think — this is an isolation move</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alt-exercise">
+    <div class="alt-exercise-top" onclick="toggleAlt(this)">
+      <span class="alt-name">Inverted body row (bar in rack)</span>
+      <span class="alt-swaps">Swaps for: pull-ups</span>
+      <span class="alt-expand">▾</span>
+    </div>
+    <div class="alt-tips">
+      <ul>
+        <li>Set a barbell in a rack at about waist height</li>
+        <li>Hang underneath, heels on floor, body straight</li>
+        <li>Pull chest to the bar, squeeze shoulder blades together</li>
+        <li>Walk feet further forward to make it harder</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alt-exercise">
+    <div class="alt-exercise-top" onclick="toggleAlt(this)">
+      <span class="alt-name">KB sumo deadlift</span>
+      <span class="alt-swaps">Swaps for: KB RDL</span>
+      <span class="alt-expand">▾</span>
+    </div>
+    <div class="alt-tips">
+      <ul>
+        <li>Wide stance, toes turned out 30–45°</li>
+        <li>KB hangs between your legs — sit hips back and down</li>
+        <li>Drive through heels, squeeze glutes hard at the top</li>
+        <li>More glute-dominant than a conventional stance</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alt-exercise">
+    <div class="alt-exercise-top" onclick="toggleAlt(this)">
+      <span class="alt-name">Sandbag bear hug squat</span>
+      <span class="alt-swaps">Swaps for: goblet squat</span>
+      <span class="alt-expand">▾</span>
+    </div>
+    <div class="alt-tips">
+      <ul>
+        <li>Hug the sandbag tight to your chest — arms wrapped around it</li>
+        <li>The instability forces extra core engagement</li>
+        <li>Squat as deep as you comfortably can</li>
+        <li>Great variation if all the KBs/DBs are taken</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Built for Becky & Nick · Tap any exercise to see form tips
+</div>
+
+<script>
+function toggle(el) {
+  const tips = el.parentElement.querySelector('.form-tips');
+  const arrow = el.querySelector('.exercise-expand');
+  tips.classList.toggle('visible');
+  if (arrow) arrow.classList.toggle('open');
+}
+
+function toggleAlt(el) {
+  const tips = el.parentElement.querySelector('.alt-tips');
+  const arrow = el.querySelector('.alt-expand');
+  tips.classList.toggle('visible');
+  if (arrow) arrow.classList.toggle('open');
+}
+</script>
+</body>
+</html>
