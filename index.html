@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>David Lloyd Session — Saturday</title>
+<title>David Lloyd Session</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -22,6 +22,7 @@
   --purple-soft: #ede4f0;
   --warm: #8a6b4a;
   --warm-soft: #f0e8df;
+  --log-bg: #faf7f4;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -180,6 +181,12 @@ body {
   color: var(--text-muted);
   flex-shrink: 0;
   margin-right: 10px;
+  transition: all 0.2s;
+}
+
+.exercise-id.logged {
+  background: var(--green-soft);
+  color: var(--green);
 }
 
 .exercise-name {
@@ -205,23 +212,31 @@ body {
   user-select: none;
 }
 
-.exercise-expand.open {
-  transform: rotate(180deg);
-}
+.exercise-expand.open { transform: rotate(180deg); }
 
 .form-tips {
   display: none;
   padding: 10px 0 4px 36px;
 }
 
-.form-tips.visible {
-  display: block;
+.form-tips.visible { display: block; }
+
+.setup-note {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.form-tips ul {
-  list-style: none;
-  padding: 0;
-}
+.setup-note::before { content: '⚙'; font-size: 13px; }
+
+.form-tips ul { list-style: none; padding: 0; }
 
 .form-tips li {
   position: relative;
@@ -239,6 +254,149 @@ body {
   font-size: 12px;
 }
 
+/* --- Progress Tracker --- */
+.tracker {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+
+.tracker-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.tracker-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tracker-field { display: flex; flex-direction: column; gap: 3px; }
+
+.tracker-field label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tracker-field input,
+.tracker-field textarea {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--log-bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.tracker-field input:focus,
+.tracker-field textarea:focus { border-color: var(--green); }
+
+.tracker-field.full { grid-column: 1 / -1; }
+
+.tracker-field textarea { resize: none; height: 56px; }
+
+.tracker-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tracker-btn.save { background: var(--green); color: white; }
+.tracker-btn.save:active { transform: scale(0.97); }
+
+.tracker-actions { display: flex; gap: 8px; align-items: center; }
+
+.save-confirm {
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.save-confirm.show { opacity: 1; }
+
+/* --- History --- */
+.history { margin-top: 12px; }
+
+.history-toggle {
+  font-size: 12px;
+  color: var(--blue);
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.history-list { display: none; margin-top: 8px; }
+.history-list.visible { display: block; }
+
+.history-entry {
+  background: var(--log-bg);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.history-date { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+.history-data { font-size: 13px; margin-top: 2px; }
+.history-data span { margin-right: 12px; }
+.history-data .hl { font-weight: 700; color: var(--text); }
+
+.history-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.history-delete {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.5;
+  padding: 2px 6px;
+  line-height: 1;
+}
+
+.no-history {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 4px 0;
+}
+
+/* --- Alternatives --- */
 .alternatives {
   margin: 0 16px 14px;
   background: var(--card);
@@ -253,26 +411,11 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.alt-header h3 {
-  font-family: 'Instrument Serif', serif;
-  font-size: 18px;
-  font-weight: 400;
-}
+.alt-header h3 { font-family: 'Instrument Serif', serif; font-size: 18px; font-weight: 400; }
+.alt-header p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
-.alt-header p {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.alt-exercise {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.alt-exercise:last-child {
-  border-bottom: none;
-}
+.alt-exercise { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.alt-exercise:last-child { border-bottom: none; }
 
 .alt-exercise-top {
   display: flex;
@@ -282,11 +425,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.alt-name {
-  font-weight: 500;
-  font-size: 14px;
-  flex: 1;
-}
+.alt-name { font-weight: 500; font-size: 14px; flex: 1; }
 
 .alt-swaps {
   font-size: 12px;
@@ -306,23 +445,11 @@ body {
   user-select: none;
 }
 
-.alt-expand.open {
-  transform: rotate(180deg);
-}
+.alt-expand.open { transform: rotate(180deg); }
 
-.alt-tips {
-  display: none;
-  padding: 8px 0 2px 0;
-}
-
-.alt-tips.visible {
-  display: block;
-}
-
-.alt-tips ul {
-  list-style: none;
-  padding: 0;
-}
+.alt-tips { display: none; padding: 8px 0 2px 0; }
+.alt-tips.visible { display: block; }
+.alt-tips ul { list-style: none; padding: 0; }
 
 .alt-tips li {
   position: relative;
@@ -350,16 +477,36 @@ body {
   line-height: 1.5;
 }
 
-.note-bar strong {
-  font-weight: 700;
+.note-bar strong { font-weight: 700; }
+
+.data-section {
+  margin: 0 16px 14px;
+  padding: 16px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  text-align: center;
 }
 
-.footer {
-  text-align: center;
-  padding: 24px 20px;
+.data-section p { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+
+.data-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+.data-btn {
+  font-family: 'DM Sans', sans-serif;
   font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
   color: var(--text-muted);
+  cursor: pointer;
 }
+
+.data-btn.danger { color: var(--accent); border-color: var(--accent-soft); }
+
+.footer { text-align: center; padding: 24px 20px; font-size: 12px; color: var(--text-muted); }
 </style>
 </head>
 <body>
@@ -380,8 +527,8 @@ body {
       <div class="stat-label">Blocks</div>
     </div>
     <div class="stat">
-      <div class="stat-value">25</div>
-      <div class="stat-label">Sets</div>
+      <div class="stat-value" id="sessionCount">0</div>
+      <div class="stat-label">Sessions logged</div>
     </div>
   </div>
 </div>
@@ -396,7 +543,7 @@ body {
   </div>
   <div class="block-meta">No rest — flow through continuously</div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="w1">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">1</span>
       <span class="exercise-name">Hip circles</span>
@@ -412,7 +559,7 @@ body {
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="w2">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">2</span>
       <span class="exercise-name">Bodyweight squats</span>
@@ -428,7 +575,7 @@ body {
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="w3">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">3</span>
       <span class="exercise-name">Glute bridges</span>
@@ -444,7 +591,7 @@ body {
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="w4">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">4</span>
       <span class="exercise-name">Inchworms</span>
@@ -460,7 +607,7 @@ body {
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="w5">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">5</span>
       <span class="exercise-name">Light KB swings</span>
@@ -487,7 +634,7 @@ body {
   </div>
   <div class="block-meta">Superset A1 ↔ A2 · Rest 60–90s between rounds · 3 rounds</div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="a1">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">A1</span>
       <span class="exercise-name">Goblet squat</span>
@@ -495,16 +642,33 @@ body {
       <span class="exercise-expand">▾</span>
     </div>
     <div class="form-tips">
+      <div class="setup-note">Start on 16kg KB</div>
       <ul>
         <li>Hold KB or DB at chest height, elbows tucked in</li>
         <li>Sit deep — hip crease below knee if possible</li>
         <li>Push knees out wide at the bottom, pause for a beat</li>
         <li>Drive up through the whole foot, squeezing glutes at top</li>
       </ul>
+      <div class="tracker" data-exercise="a1">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. 16kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×10" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="a2">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">A2</span>
       <span class="exercise-name">Single leg hip thrust (back on bench)</span>
@@ -519,6 +683,22 @@ body {
         <li>Tuck your chin slightly — don't arch your neck back</li>
         <li>If too hard single leg, do both legs with a plate on hips</li>
       </ul>
+      <div class="tracker" data-exercise="a2">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. BW or +10kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×10" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -531,7 +711,7 @@ body {
   </div>
   <div class="block-meta">Superset B1 ↔ B2 · Rest 60–90s between rounds · 3 rounds</div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="b1">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">B1</span>
       <span class="exercise-name">KB Romanian deadlift</span>
@@ -539,6 +719,7 @@ body {
       <span class="exercise-expand">▾</span>
     </div>
     <div class="form-tips">
+      <div class="setup-note">Start on 16kg kettlebells</div>
       <ul>
         <li>Hold two KBs in front of thighs, soft bend in knees</li>
         <li>Push hips back like you're closing a car door with your bum</li>
@@ -546,10 +727,26 @@ body {
         <li>Stop when you feel maximum stretch, then drive hips forward</li>
         <li>Keep KBs close to your legs the whole way</li>
       </ul>
+      <div class="tracker" data-exercise="b1">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. 2×16kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×10" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="b2">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">B2</span>
       <span class="exercise-name">Half-kneeling single arm DB press</span>
@@ -563,6 +760,22 @@ body {
         <li>Brace your core hard — don't lean or arch sideways</li>
         <li>Press straight up, lock out fully, lower under control</li>
       </ul>
+      <div class="tracker" data-exercise="b2">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. 8kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×8" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -575,7 +788,7 @@ body {
   </div>
   <div class="block-meta">Superset C1 ↔ C2 · Rest 60–90s between rounds · 3 rounds</div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="c1">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">C1</span>
       <span class="exercise-name">DB Bulgarian split squat</span>
@@ -583,6 +796,7 @@ body {
       <span class="exercise-expand">▾</span>
     </div>
     <div class="form-tips">
+      <div class="setup-note">Start on 3kg dumbbells each side</div>
       <ul>
         <li>Rear foot up on bench, shoelaces down</li>
         <li>Front foot far enough forward that knee stays over ankle</li>
@@ -590,24 +804,57 @@ body {
         <li>Lower until back knee almost touches the floor</li>
         <li>For the right hip — don't force depth if you feel a pinch</li>
       </ul>
+      <div class="tracker" data-exercise="c1">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. 2×3kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×8" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="c2">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">C2</span>
-      <span class="exercise-name">Resistance band pull-ups</span>
+      <span class="exercise-name">Assisted pull-ups (weighted assistance)</span>
       <span class="exercise-rx">3 × 6–8</span>
       <span class="exercise-expand">▾</span>
     </div>
     <div class="form-tips">
+      <div class="setup-note">Start on 180lbs assistance · Adjust arms out wider</div>
       <ul>
-        <li>Loop band over bar, step in with one or both feet</li>
-        <li>Hands just outside shoulder width, palms facing away</li>
-        <li>Pull elbows down and back — think "bend the bar"</li>
-        <li>Get chin clearly over the bar, lower fully each rep</li>
-        <li>Use a thicker band if you can't get 6 clean reps</li>
+        <li>Kneel on the pad, grip the handles with arms wider than shoulders</li>
+        <li>Palms facing away, pull elbows down and back — think "bend the bar"</li>
+        <li>Get chin clearly over the handles, lower fully each rep</li>
+        <li>Increase the weight to make it easier, decrease to make it harder</li>
+        <li>Control the descent — don't just drop back down</li>
       </ul>
+      <div class="tracker" data-exercise="c2">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Assistance</label><input type="text" placeholder="e.g. 180lbs" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×6" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -620,7 +867,7 @@ body {
   </div>
   <div class="block-meta">Superset D1 ↔ D2 · Rest 60s between rounds · 3 rounds</div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="d1">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">D1</span>
       <span class="exercise-name">Press-ups</span>
@@ -634,10 +881,26 @@ body {
         <li>Lower chest to the floor, elbows at ~45° to your body</li>
         <li>Incline on the bench to scale easier, or knees down</li>
       </ul>
+      <div class="tracker" data-exercise="d1">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Variation</label><input type="text" placeholder="e.g. full / knees / incline" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×10" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="d2">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">D2</span>
       <span class="exercise-name">Single arm cable mid row</span>
@@ -645,12 +908,29 @@ body {
       <span class="exercise-expand">▾</span>
     </div>
     <div class="form-tips">
+      <div class="setup-note">Adjust height to just above 5 · Start on 14kg</div>
       <ul>
         <li>Set cable at about belly button height</li>
         <li>Square your hips — resist the rotation, that's the core work</li>
         <li>Pull elbow straight back, squeeze shoulder blade in</li>
         <li>Slow return — don't let the cable yank you forward</li>
       </ul>
+      <div class="tracker" data-exercise="d2">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. 14kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×10" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -663,7 +943,7 @@ body {
   </div>
   <div class="block-meta">Tri-set E1 → E2 → E3 · Rest 45–60s between rounds · 3 rounds</div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="e1">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">E1</span>
       <span class="exercise-name">Med ball rotational slam</span>
@@ -671,16 +951,33 @@ body {
       <span class="exercise-expand">▾</span>
     </div>
     <div class="form-tips">
+      <div class="setup-note">Use the 6kg ball</div>
       <ul>
         <li>Use a dead ball (the ones that don't bounce)</li>
         <li>Rotate from the hips and core, not just the arms</li>
         <li>Slam hard into the ground just outside your foot</li>
         <li>Reset fully between each rep — power, not cardio</li>
       </ul>
+      <div class="tracker" data-exercise="e1">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. 6kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×6" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="e2">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">E2</span>
       <span class="exercise-name">Cable tricep pushdown</span>
@@ -688,15 +985,32 @@ body {
       <span class="exercise-expand">▾</span>
     </div>
     <div class="form-tips">
+      <div class="setup-note">Height adjust just above 31 · Start on 14kg</div>
       <ul>
         <li>Elbows pinned to your sides — they shouldn't drift forward</li>
         <li>Push down and slightly out at the bottom, squeeze triceps</li>
         <li>Control the return — don't let it snap back up</li>
       </ul>
+      <div class="tracker" data-exercise="e2">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Weight</label><input type="text" placeholder="e.g. 14kg" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×12" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="exercise">
+  <div class="exercise" data-id="e3">
     <div class="exercise-top" onclick="toggle(this)">
       <span class="exercise-id">E3</span>
       <span class="exercise-name">Dead bug</span>
@@ -711,6 +1025,22 @@ body {
         <li>If your back arches off the floor, you've gone too far</li>
         <li>Go slow — 3 seconds out, 3 seconds back</li>
       </ul>
+      <div class="tracker" data-exercise="e3">
+        <div class="tracker-title">📝 Log progress</div>
+        <div class="tracker-inputs">
+          <div class="tracker-field"><label>Variation</label><input type="text" placeholder="e.g. BW / weighted" class="t-weight"></div>
+          <div class="tracker-field"><label>Sets × Reps</label><input type="text" placeholder="e.g. 3×10" class="t-reps"></div>
+          <div class="tracker-field full"><label>Notes</label><textarea placeholder="How did it feel? Anything to adjust next time?" class="t-note"></textarea></div>
+        </div>
+        <div class="tracker-actions">
+          <button class="tracker-btn save" onclick="saveLog(this)">Save entry</button>
+          <span class="save-confirm">✓ Saved</span>
+        </div>
+        <div class="history">
+          <button class="history-toggle" onclick="toggleHistory(this)">Show previous sessions ▾</button>
+          <div class="history-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -810,16 +1140,43 @@ body {
   </div>
 </div>
 
+<!-- DATA MANAGEMENT -->
+<div class="section-label">⚙ Your data</div>
+
+<div class="data-section">
+  <p>All progress is saved on this device's browser. Clearing browser data will erase it.</p>
+  <div class="data-actions">
+    <button class="data-btn" onclick="exportData()">Export as JSON</button>
+    <button class="data-btn danger" onclick="clearAllData()">Clear all data</button>
+  </div>
+</div>
+
 <div class="footer">
-  Built for Becky & Nick · Tap any exercise to see form tips
+  Built for Becky & Nick · Tap any exercise to see form tips & log progress
 </div>
 
 <script>
+const STORAGE_KEY = 'dl_session_logs';
+
+function getAllLogs() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+function saveLogs(logs) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(logs));
+}
+
 function toggle(el) {
   const tips = el.parentElement.querySelector('.form-tips');
   const arrow = el.querySelector('.exercise-expand');
   tips.classList.toggle('visible');
   if (arrow) arrow.classList.toggle('open');
+  // Render history when opening
+  const tracker = tips.querySelector('.tracker');
+  if (tracker && tips.classList.contains('visible')) {
+    renderHistory(tracker);
+  }
 }
 
 function toggleAlt(el) {
@@ -828,6 +1185,143 @@ function toggleAlt(el) {
   tips.classList.toggle('visible');
   if (arrow) arrow.classList.toggle('open');
 }
+
+function saveLog(btn) {
+  const tracker = btn.closest('.tracker');
+  const exerciseId = tracker.dataset.exercise;
+  const weight = tracker.querySelector('.t-weight').value.trim();
+  const reps = tracker.querySelector('.t-reps').value.trim();
+  const note = tracker.querySelector('.t-note').value.trim();
+
+  if (!weight && !reps && !note) return;
+
+  const logs = getAllLogs();
+  if (!logs[exerciseId]) logs[exerciseId] = [];
+
+  logs[exerciseId].push({
+    date: new Date().toISOString(),
+    weight, reps, note
+  });
+  saveLogs(logs);
+
+  // Clear inputs
+  tracker.querySelector('.t-weight').value = '';
+  tracker.querySelector('.t-reps').value = '';
+  tracker.querySelector('.t-note').value = '';
+
+  // Flash confirmation
+  const confirm = btn.parentElement.querySelector('.save-confirm');
+  confirm.classList.add('show');
+  setTimeout(() => confirm.classList.remove('show'), 2000);
+
+  // Mark exercise bubble green
+  const exerciseEl = tracker.closest('.exercise');
+  const idBubble = exerciseEl.querySelector('.exercise-id');
+  if (idBubble) idBubble.classList.add('logged');
+
+  renderHistory(tracker);
+  updateSessionCount();
+}
+
+function renderHistory(tracker) {
+  const exerciseId = tracker.dataset.exercise;
+  const logs = getAllLogs();
+  const entries = (logs[exerciseId] || []).slice().reverse();
+  const listEl = tracker.querySelector('.history-list');
+
+  if (entries.length === 0) {
+    listEl.innerHTML = '<div class="no-history">No entries yet — log your first session above</div>';
+    return;
+  }
+
+  listEl.innerHTML = entries.map((e, i) => {
+    const realIndex = entries.length - 1 - i;
+    const d = new Date(e.date);
+    const dateStr = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    const timeStr = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    return '<div class="history-entry">' +
+      '<button class="history-delete" onclick="deleteEntry(\'' + exerciseId + '\',' + realIndex + ',this)" title="Delete">✕</button>' +
+      '<div class="history-date">' + dateStr + ' at ' + timeStr + '</div>' +
+      '<div class="history-data">' +
+        (e.weight ? '<span><span class="hl">' + e.weight + '</span></span>' : '') +
+        (e.reps ? '<span><span class="hl">' + e.reps + '</span></span>' : '') +
+      '</div>' +
+      (e.note ? '<div class="history-note">' + e.note + '</div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+function deleteEntry(exerciseId, index, btn) {
+  if (!confirm('Delete this entry?')) return;
+  const logs = getAllLogs();
+  if (logs[exerciseId]) {
+    logs[exerciseId].splice(index, 1);
+    saveLogs(logs);
+    const tracker = btn.closest('.tracker');
+    renderHistory(tracker);
+    updateSessionCount();
+    if (logs[exerciseId].length === 0) {
+      const exerciseEl = tracker.closest('.exercise');
+      const idBubble = exerciseEl.querySelector('.exercise-id');
+      if (idBubble) idBubble.classList.remove('logged');
+    }
+  }
+}
+
+function toggleHistory(btn) {
+  const list = btn.parentElement.querySelector('.history-list');
+  list.classList.toggle('visible');
+  btn.textContent = list.classList.contains('visible')
+    ? 'Hide previous sessions ▴'
+    : 'Show previous sessions ▾';
+}
+
+function updateSessionCount() {
+  const logs = getAllLogs();
+  const allDates = new Set();
+  Object.values(logs).forEach(entries => {
+    entries.forEach(e => allDates.add(new Date(e.date).toDateString()));
+  });
+  const el = document.getElementById('sessionCount');
+  if (el) el.textContent = allDates.size;
+}
+
+function markLoggedExercises() {
+  const logs = getAllLogs();
+  document.querySelectorAll('.exercise[data-id]').forEach(ex => {
+    const id = ex.dataset.id;
+    if (logs[id] && logs[id].length > 0) {
+      const idBubble = ex.querySelector('.exercise-id');
+      if (idBubble) idBubble.classList.add('logged');
+    }
+  });
+}
+
+function exportData() {
+  const logs = getAllLogs();
+  const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'dl-session-progress-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearAllData() {
+  if (!confirm('This will delete ALL your logged progress. Are you sure?')) return;
+  if (!confirm('Really sure? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll('.exercise-id.logged').forEach(el => el.classList.remove('logged'));
+  updateSessionCount();
+  document.querySelectorAll('.history-list').forEach(el => {
+    el.innerHTML = '<div class="no-history">No entries yet — log your first session above</div>';
+  });
+}
+
+// Init
+updateSessionCount();
+markLoggedExercises();
 </script>
 </body>
 </html>
